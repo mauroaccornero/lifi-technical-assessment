@@ -172,6 +172,14 @@ A back button allow the user to return to the main homepage.
 
 For a better experience the [Suspense](https://nextjs.org/docs/app/building-your-application/routing/loading-ui-and-streaming#streaming-with-suspense) component was used to handle the UI while the data is loading.
 
+## Mark favorite tokens feature
+
+To add the ability to mark a token as favorite a custom hook it's used to manage the localStorage and add/remove tokens from the localStorage array.
+
+To move favorite tokens on top the token filter inside TokenList component was updated.
+
+As well the TokenItem now show a start that underline which tokens are marked as favorite.
+
 ### UI/UX
 
 Material Ui it's used to create most of the UI. A basic theme it's present inside the app folder as some styled component for custom components.

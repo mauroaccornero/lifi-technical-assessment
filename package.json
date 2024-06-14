@@ -1,0 +1,44 @@
+{
+  "name": "lifi-techical-assessment",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "test:build": "next dev --port 5432",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:fix": "npm run lint -- --fix",
+    "audit": "npm audit --omitDev",
+    "tsc": "npx tsc --noEmit",
+    "test:ci": "CI=true npm run test",
+    "test": "npx playwright test",
+    "dev:test": "npx playwright test --ui",
+    "pre-commit": "npm run tsc && npm run lint:fix && npm run audit"
+  },
+  "dependencies": {
+    "@emotion/cache": "^11.11.0",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/icons-material": "^5.15.19",
+    "@mui/material": "^5.15.19",
+    "@mui/material-nextjs": "^5.15.11",
+    "next": "14.2.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "sharp": "^0.33.4",
+    "virtua": "^0.31.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.44.1",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.3",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "prettier": "^3.3.2",
+    "typescript": "^5"
+  }
+}

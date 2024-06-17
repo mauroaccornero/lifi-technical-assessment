@@ -1,19 +1,17 @@
 import { normalizedTokenData } from "@/types/normalizedTokenData";
-import { chainData, chainsApi } from "@/types/api/chains";
-import { getChainsTokens } from "@/api/getChainTokens";
+import { tokensApi } from "@/types/api/tokens";
+import { flatTokensResponse } from "@/utils/flatTokensResponse";
 
 export async function getAllTokens() {
-  const chainsRes = await fetch(`${process.env.API_URL}/chains`);
-
-  const chainsData: chainsApi = await chainsRes.json();
-  const chainsKeys = chainsData.chains
-    ? chainsData.chains.map((chain: chainData) => chain.id)
-    : [];
-
-  return Promise.all(
-    chainsKeys.map((chainId) => {
-      const chainIdString = chainId.toString();
-      return getChainsTokens(chainIdString);
-    }),
-  ).then((results) => results.flat(2) as normalizedTokenData[]);
+  const url = `${process.env.API_URL}/tokens`;
+  return await fetch(url, { next: { revalidate: 60000 } })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Some error occurred calling ${url}`);
+      }
+      return res.json();
+    })
+    .then((data: tokensApi) => {
+      return flatTokensResponse(data) as normalizedTokenData[];
+    });
 }

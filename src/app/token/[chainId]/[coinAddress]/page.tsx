@@ -8,7 +8,6 @@ import MuiLink from "@mui/material/Link";
 import Link from "next/link";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Loader } from "@/components/Loader/Loader";
-import { getToken } from "@/api/getToken";
 
 interface TokenDetailPageParams {
   chainId: string;
@@ -21,8 +20,7 @@ interface TokenDetailPageProps {
 
 export async function generateStaticParams() {
   const tokens = await getAllTokens();
-  // limit ISR to 20 pages
-  return tokens.slice(0, 20).map((token) => {
+  return tokens.map((token) => {
     return {
       chainId: token.chainId.toString(),
       coinAddress: token.address,
@@ -33,7 +31,12 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: TokenDetailPageProps): Promise<Metadata> {
-  const token = await getToken(params);
+  const tokens = await getAllTokens();
+  const token = tokens.find(
+    (token) =>
+      token.chainId.toString() === params.chainId &&
+      token.address === params.coinAddress,
+  );
   return {
     title: token ? `Discover ${token.name} token` : "Token detail",
     description: token

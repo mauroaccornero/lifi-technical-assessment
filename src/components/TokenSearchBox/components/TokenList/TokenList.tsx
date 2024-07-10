@@ -7,6 +7,7 @@ import { TokenItem } from "@/components/TokenSearchBox/components/TokenItem/Toke
 import { Box } from "@mui/material";
 import { normalizedTokenData } from "@/types/normalizedTokenData";
 import { useSearchParams } from "next/navigation";
+import { useFavoriteTokens } from "@/hooks/useFavoriteTokens";
 
 interface TokenListProps {
   tokens: normalizedTokenData[];
@@ -15,14 +16,21 @@ interface TokenListProps {
 export function TokenList({ tokens }: TokenListProps) {
   const searchParams = useSearchParams();
   const query = searchParams.get("query")?.toString() || "";
+  const { favoriteTokens, isAFavoriteToken } = useFavoriteTokens();
   const filteredTokens = useMemo(() => {
     const k = tokens.filter(
       (token: normalizedTokenData) =>
         token.symbol.toLowerCase().includes(query.toLowerCase()) ||
         token.name.toLowerCase().includes(query.toLowerCase()),
     );
+    if (favoriteTokens) {
+      return [
+        ...k.filter((token) => isAFavoriteToken(token)),
+        ...k.filter((token) => !isAFavoriteToken(token)),
+      ];
+    }
     return k;
-  }, [query, tokens]);
+  }, [query, tokens, favoriteTokens, isAFavoriteToken]);
 
   return (
     <Box

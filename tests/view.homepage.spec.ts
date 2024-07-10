@@ -12,4 +12,7 @@ test("view homepage test", async ({ page }) => {
   await expect(
     page.getByTestId("token-item-0").getByTestId("token-image"),
   ).toBeVisible();
+  await expect(
+    page.getByTestId("token-item-0").getByTestId("not-favorite-token"),
+  ).toBeVisible();
 });

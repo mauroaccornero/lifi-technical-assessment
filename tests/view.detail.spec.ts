@@ -14,4 +14,5 @@ test("view detail test", async ({ page }) => {
   await expect(page.getByTestId("token-detail-coinKey")).toBeVisible();
   await expect(page.getByTestId("token-image")).toBeVisible();
   await expect(page.getByTestId("link-back-home")).toBeVisible();
+  await expect(page.getByTestId("favorite-button")).toBeVisible();
 });

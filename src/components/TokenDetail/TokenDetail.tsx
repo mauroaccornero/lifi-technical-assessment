@@ -2,6 +2,7 @@ import { TokenImage } from "@/components/TokenImage/TokenImage";
 import { Box, Typography } from "@mui/material";
 import { notFound } from "next/navigation";
 import { getToken } from "@/api/getToken";
+import { FavoriteButton } from "@/components/FavoriteButton/FavoriteButton";
 
 interface TokenDetailProps {
   chainId: string;
@@ -48,6 +49,7 @@ export default async function TokenDetail({
       <Typography variant={"body1"} data-testid={`token-detail-decimals`}>
         Decimals: {token.decimals}
       </Typography>
+      <FavoriteButton token={token} />
     </>
   );
 }

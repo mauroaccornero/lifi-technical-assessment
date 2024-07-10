@@ -8,6 +8,8 @@ import {
   Typography,
   Box,
 } from "@mui/material";
+import StarIcon from "@mui/icons-material/Star";
+import { useFavoriteTokens } from "@/hooks/useFavoriteTokens";
 
 interface TokenItemProps {
   token: normalizedTokenData;
@@ -15,6 +17,8 @@ interface TokenItemProps {
 }
 
 export function TokenItem({ token, index }: TokenItemProps) {
+  const { isAFavoriteToken } = useFavoriteTokens();
+  const isFavoriteToken = isAFavoriteToken(token);
   return (
     <>
       <Box sx={{ mb: 1 }} data-testid={`token-item-${index}`}>
@@ -62,6 +66,17 @@ export function TokenItem({ token, index }: TokenItemProps) {
               {token.address}
             </Typography>
           </Box>
+          <Typography
+            variant={"body1"}
+            sx={{ color: "#000", display: "flex", justifySelf: "right", mr: 0 }}
+            data-testid={`token-item-${index}-favorite`}
+          >
+            {isFavoriteToken ? (
+              <StarIcon color={"warning"} data-testid={"is-favorite-token"} />
+            ) : (
+              <StarIcon color={"disabled"} data-testid={"not-favorite-token"} />
+            )}
+          </Typography>
         </MuiLink>
       </Box>
       <Divider variant="inset" />

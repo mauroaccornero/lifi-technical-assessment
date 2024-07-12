@@ -206,7 +206,6 @@ The average result from Lighthouse reports a good performance for the app
 
 ![lighthouse_report](screenshots/lighthouse_report.png)
 
-
 ### Security
 
 To improve the security for this application more information are required but as general discussion here are some point that could be improved:
@@ -227,6 +226,56 @@ npm run dev:test
 ```
 
 At moment, test runs on a dev build of the app. This can be improved by adding a mock server for fixtures and test on a specific build.
+
+## Custom cache handler
+
+To check the custom cache handler build and run the redis image with docker-compose
+
+```
+docker-compose up
+```
+
+The container terminal should show redis running and waiting for connections
+
+![redis_docker](screenshots/redis_docker_compose.png)
+
+Then build the app with cache log enabled
+
+```
+npm run build:cache:log
+```
+
+additional cache log should be available on terminal during the build
+
+![build_cache_log](screenshots/build_cache_log.png)
+
+Then start the app with cache log enabled 
+
+```
+npm run start:cache:log
+```
+
+additional cache log should be available on terminal after the start
+
+![build_cache_log](screenshots/start_cache_log.png)
+
+The idea it's to use a custom cache handler to avoid [Next.js limitations of 2mb when using the Data Cache](https://github.com/vercel/next.js/discussions/48324).
+
+Next.js documentation offer an [example of custom cache handler using redis](https://github.com/vercel/next.js/blob/canary/examples/cache-handler-redis/cache-handler.js) using [next shared cache](https://github.com/caching-tools/next-shared-cache).
+
+Two main benefits of this solution are:
+
+1. Ability to cache more than 2mb without errors (for example [https://li.quest/v1/tokens](https://li.quest/v1/tokens))
+2. Better average performance per page
+3. prerender all 16000 and more token detail pages
+
+![custom_cache_performance](screenshots/custom_cache_handler_page_performance.png)
+
+![details_prerender](screenshots/prerender_all_token_details.png)
+
+Additional tests are required, but I think that this solution have some benefits for this specific case.
+
+I got a little [issue with Docker desktop](https://github.com/docker/for-mac/issues/6956), but it can be solved by using [orbstack](https://orbstack.dev/) as alternative.
 
 ## Troubleshoot
 

@@ -1,8 +1,9 @@
 import { TokenImage } from "@/components/TokenImage/TokenImage";
 import { Box, Typography } from "@mui/material";
 import { notFound } from "next/navigation";
-import { getToken } from "@/api/getToken";
+import { getAllTokens } from "@/api/getAllTokens";
 import { FavoriteButton } from "@/components/FavoriteButton/FavoriteButton";
+
 
 interface TokenDetailProps {
   chainId: string;
@@ -13,7 +14,11 @@ export default async function TokenDetail({
   chainId,
   coinAddress,
 }: TokenDetailProps) {
-  const token = await getToken({ chainId, coinAddress });
+  const tokens = await getAllTokens();
+  const token = tokens.find(
+    (token) =>
+      token.chainId.toString() === chainId && token.address === coinAddress,
+  );
   if (!token || !token.address) {
     notFound();
   }
